@@ -36,3 +36,8 @@ maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
 specificationVersion: '0.19'
+common:
+  - name: GM Developers
+    description: 'null'
+    url: https://developer.gm.com/
+    type: Portal
