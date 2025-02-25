@@ -28,6 +28,18 @@ common:
     name: GM Developers
     type: Portal
     description: 'null'
+  - name: GM Developers
+    description: 'null'
+    url: https://developer.gm.com/docs
+    type: Documentation
+  - name: GM Developers
+    description: 'null'
+    url: https://developer.gm.com/docs/getting-started
+    type: GettingStarted
+  - name: GM Developers
+    description: 'null'
+    url: https://developer.gm.com/contact-us
+    type: Contact
 created: '2025-02-08'
 modified: '2025-02-25'
 position: Consuming
