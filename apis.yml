@@ -2,9 +2,9 @@ aid: gm
 url: https://raw.githubusercontent.com/api-evangelist/gm/refs/heads/main/apis.yml
 apis:
   - aid: gm:gm
-    name: GM
+    name: General   Motors
     tags:
-      - API
+      - Automobiles
     humanURL: ' https://developer.gm.com/'
     properties:
       - url: ' https://developer.gm.com/'
