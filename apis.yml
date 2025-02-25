@@ -1,8 +1,8 @@
-aid: gm
+aid: general-motors
 url: https://raw.githubusercontent.com/api-evangelist/gm/refs/heads/main/apis.yml
 apis:
-  - aid: gm:gm
-    name: General   Motors
+  - aid: general-motors:general-motors
+    name: General Motors
     tags:
       - Automobiles
     humanURL: ' https://developer.gm.com/'
@@ -23,6 +23,19 @@ tags:
 type: Contract
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
+common:
+  - url: https://developer.gm.com/
+    name: GM Developers
+    type: Portal
+    description: 'null'
+  - url: https://developer.gm.com/vehicle-apis
+    name: GM Developers
+    type: Documentation
+    description: 'null'
+  - url: https://developer.gm.com/faqs
+    name: GM Developers
+    type: FAQ
+    description: 'null'
 created: '2025-02-08'
 modified: '2025-02-25'
 position: Consuming
