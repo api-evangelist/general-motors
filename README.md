@@ -23,7 +23,7 @@ You can reach customers in their cars using GMs powerful, in-vehicle platform. O
 ### General   Motors
 You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters. Create an account now to start developing amazing in-vehicle experiences for your customers. 
 
-**Human URL:** [ https://developer.gm.com/]( https://developer.gm.com/)
+**Human URL:** [https://developer.gm.com/](https://developer.gm.com/)
 
 
 #### Tags:
@@ -32,7 +32,14 @@ You can reach customers in their cars using GMs powerful, in-vehicle platform. O
 
 #### Properties
 
-- [Documentation]( https://developer.gm.com/)
+- [Documentation](https://developer.gm.com/)
+
+## Common Properties
+
+- [Portal](https://developer.gm.com/)
+- [Documentation](https://developer.gm.com/docs)
+- [GettingStarted](https://developer.gm.com/docs/getting-started)
+- [Contact](https://developer.gm.com/contact-us)
 
 ## Maintainers
 
