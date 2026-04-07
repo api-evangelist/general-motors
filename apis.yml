@@ -13,9 +13,9 @@ created: '2025-02-08'
 modified: '2026-03-16'
 position: Consumer
 tags:
-  - Vehicles
   - Automobiles
   - Cars
+  - Vehicles
 url: >-
   https://raw.githubusercontent.com/api-evangelist/general-motors/refs/heads/main/apis.yml
 specificationVersion: '0.19'
