@@ -1,34 +1,35 @@
-# General Motors (gm)
-You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters. Create an account now to start developing amazing in-vehicle experiences for your customers. 
+# General Motors
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/gm/refs/heads/main/apis.yml)
+You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters. Create an account now to start developing amazing in-vehicle experiences for your customers.
+
+**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/general-motors/refs/heads/main/apis.yml)
 
 ## Scope
 
-- **Type:** Contract 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+- **Type:** Index
+- **Position:** Consumer
+- **Access:** 3rd-Party
 
-## Tags:
+## Tags
 
- - Vehicles, Automobiles, Cars
+- Automobiles, Cars, Vehicles, Connected Vehicles, Telematics
 
 ## Timestamps
 
-- **Created:** 2025-02-08 
-- **Modified:** 2025-02-25 
+- **Created:** 2025-02-08
+- **Modified:** 2026-04-28
 
 ## APIs
 
-### General   Motors
-You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters. Create an account now to start developing amazing in-vehicle experiences for your customers. 
+### General Motors
+
+You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters.
 
 **Human URL:** [https://developer.gm.com/](https://developer.gm.com/)
 
+#### Tags
 
-#### Tags:
-
- - Automobiles
+- Automobiles, Connected Vehicles
 
 #### Properties
 
@@ -36,14 +37,12 @@ You can reach customers in their cars using GMs powerful, in-vehicle platform. O
 
 ## Common Properties
 
-- [Portal](https://developer.gm.com/)
+- [Website](https://developer.gm.com/)
 - [Documentation](https://developer.gm.com/docs)
-- [GettingStarted](https://developer.gm.com/docs/getting-started)
-- [Contact](https://developer.gm.com/contact-us)
+- [Getting Started](https://developer.gm.com/docs/getting-started)
 
 ## Maintainers
 
 **FN:** Kin Lane
 
-**Email:** info@apievangelist.com
-
+**Email:** kin@apievangelist.com
