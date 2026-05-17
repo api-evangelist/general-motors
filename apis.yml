@@ -42,7 +42,7 @@ common:
     url: https://developer.gm.com/
   - type: Documentation
     url: https://developer.gm.com/docs
-  - type: Getting Started
+  - type: GettingStarted
     url: https://developer.gm.com/docs/getting-started
 maintainers:
   - FN: Kin Lane
