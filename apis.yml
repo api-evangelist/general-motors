@@ -38,6 +38,10 @@ apis:
       that matters, when it matters. Create an account now to start developing
       amazing in-vehicle experiences for your customers.
 common:
+  - type: GitHubOrganization
+    url: https://github.com/generalmotors
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/general-motors
   - type: Website
     url: https://developer.gm.com/
   - type: Documentation
