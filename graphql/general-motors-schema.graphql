@@ -1,0 +1,1079 @@
+"""
+General Motors Connected Vehicle GraphQL Schema
+Derived from OnStar and myChevrolet/Buick/GMC/Cadillac platform APIs.
+Covers vehicle diagnostics, remote commands, location, EV energy management,
+charging status, and vehicle health reports.
+"""
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+# ─── Root Types ──────────────────────────────────────────────────────────────
+
+type Query {
+  """Retrieve a specific vehicle by VIN."""
+  vehicle(vin: String!): Vehicle
+
+  """List all vehicles associated with the authenticated account."""
+  vehicles: [Vehicle!]!
+
+  """Get diagnostics for a specific vehicle."""
+  vehicleDiagnostics(vin: String!): DiagnosticsReport
+
+  """Get the current location of a vehicle."""
+  vehicleLocation(vin: String!): VehicleLocation
+
+  """Get charging status for an EV."""
+  chargingStatus(vin: String!): ChargingStatus
+
+  """Get the energy profile and history for an EV."""
+  energyProfile(vin: String!): EnergyProfile
+
+  """Get the vehicle health report."""
+  vehicleHealthReport(vin: String!): VehicleHealthReport
+
+  """List available remote commands for a vehicle."""
+  availableCommands(vin: String!): [RemoteCommandType!]!
+
+  """Get history of remote commands sent to a vehicle."""
+  commandHistory(vin: String!, limit: Int, offset: Int): CommandHistoryConnection!
+
+  """Get the current status of a previously issued remote command."""
+  commandStatus(commandId: ID!): RemoteCommandStatus
+
+  """Get the authenticated user's account information."""
+  account: Account
+
+  """Get subscriptions tied to a vehicle."""
+  vehicleSubscriptions(vin: String!): [Subscription!]!
+
+  """Lookup dealer information by location."""
+  dealers(latitude: Float!, longitude: Float!, radiusMiles: Float): [Dealer!]!
+
+  """Get service history records for a vehicle."""
+  serviceHistory(vin: String!, limit: Int, offset: Int): ServiceHistoryConnection!
+
+  """Get recall information for a vehicle."""
+  recalls(vin: String!): [Recall!]!
+
+  """Get tire pressure readings."""
+  tirePressure(vin: String!): TirePressureReport
+
+  """Get fuel level and range estimate."""
+  fuelStatus(vin: String!): FuelStatus
+
+  """Get oil life percentage."""
+  oilLife(vin: String!): OilLifeStatus
+
+  """Get the odometer reading."""
+  odometer(vin: String!): OdometerReading
+
+  """Get active alerts for a vehicle."""
+  vehicleAlerts(vin: String!): [VehicleAlert!]!
+
+  """Get a trip summary."""
+  tripSummary(vin: String!, tripId: ID!): Trip
+
+  """List recent trips."""
+  trips(vin: String!, limit: Int, offset: Int): TripConnection!
+
+  """Get Wi-Fi hotspot details for the vehicle."""
+  wifiHotspot(vin: String!): WifiHotspot
+
+  """Get roadside assistance options."""
+  roadsideAssistance(vin: String!): RoadsideAssistanceInfo
+}
+
+type Mutation {
+  """Lock the vehicle doors."""
+  lockDoors(vin: String!): RemoteCommandResponse!
+
+  """Unlock the vehicle doors."""
+  unlockDoors(vin: String!, pin: String!): RemoteCommandResponse!
+
+  """Remotely start the vehicle."""
+  remoteStart(vin: String!, durationMinutes: Int): RemoteCommandResponse!
+
+  """Cancel a remote start."""
+  cancelRemoteStart(vin: String!): RemoteCommandResponse!
+
+  """Activate the vehicle horn and lights."""
+  alert(vin: String!): RemoteCommandResponse!
+
+  """Set the cabin temperature for pre-conditioning."""
+  setCabinTemperature(vin: String!, input: CabinTemperatureInput!): RemoteCommandResponse!
+
+  """Start charging an EV."""
+  startCharging(vin: String!): RemoteCommandResponse!
+
+  """Stop charging an EV."""
+  stopCharging(vin: String!): RemoteCommandResponse!
+
+  """Set a charging schedule."""
+  setChargingSchedule(vin: String!, input: ChargingScheduleInput!): RemoteCommandResponse!
+
+  """Set the charge limit for an EV."""
+  setChargeLimit(vin: String!, limitPercent: Int!): RemoteCommandResponse!
+
+  """Send a destination to the vehicle's navigation system."""
+  sendDestination(vin: String!, input: DestinationInput!): RemoteCommandResponse!
+
+  """Update account profile information."""
+  updateAccountProfile(input: AccountProfileInput!): Account!
+
+  """Add an emergency contact."""
+  addEmergencyContact(input: EmergencyContactInput!): EmergencyContact!
+
+  """Remove an emergency contact."""
+  removeEmergencyContact(contactId: ID!): Boolean!
+
+  """Enable or disable a vehicle alert."""
+  setAlertPreference(vin: String!, input: AlertPreferenceInput!): AlertPreference!
+
+  """Schedule a service appointment."""
+  scheduleService(input: ServiceAppointmentInput!): ServiceAppointment!
+
+  """Cancel a service appointment."""
+  cancelServiceAppointment(appointmentId: ID!): Boolean!
+
+  """Activate or deactivate the vehicle's Wi-Fi hotspot."""
+  setWifiHotspot(vin: String!, active: Boolean!): WifiHotspot!
+
+  """Request roadside assistance."""
+  requestRoadsideAssistance(vin: String!, input: RoadsideRequestInput!): RoadsideAssistanceRequest!
+}
+
+type Subscription {
+  """Stream real-time location updates for a vehicle."""
+  vehicleLocationUpdated(vin: String!): VehicleLocation!
+
+  """Stream charging state changes for an EV."""
+  chargingStatusUpdated(vin: String!): ChargingStatus!
+
+  """Stream vehicle alert notifications."""
+  vehicleAlertTriggered(vin: String!): VehicleAlert!
+
+  """Stream remote command completion events."""
+  commandCompleted(commandId: ID!): RemoteCommandStatus!
+}
+
+# ─── Vehicle ─────────────────────────────────────────────────────────────────
+
+"""A General Motors vehicle linked to the user's account."""
+type Vehicle {
+  vin: String!
+  make: String!
+  model: String!
+  year: Int!
+  trim: String
+  color: ExteriorColor
+  imageUrl: String
+  nickname: String
+  type: VehicleType!
+  fuelType: FuelType!
+  transmissionType: TransmissionType
+  engineDisplacement: Float
+  drivetrainType: DrivetrainType
+  licensePlate: LicensePlate
+  registrationState: String
+  onStarStatus: OnStarServiceStatus!
+  capabilities: [VehicleCapability!]!
+  diagnostics: DiagnosticsReport
+  location: VehicleLocation
+  chargingStatus: ChargingStatus
+  fuelStatus: FuelStatus
+  tirePressure: TirePressureReport
+  oilLife: OilLifeStatus
+  odometer: OdometerReading
+  alerts: [VehicleAlert!]!
+  subscriptions: [VehicleSubscription!]!
+}
+
+"""Color of the vehicle exterior."""
+type ExteriorColor {
+  code: String!
+  name: String!
+  hexCode: String
+}
+
+"""License plate associated with a vehicle."""
+type LicensePlate {
+  number: String!
+  state: String!
+  country: String!
+}
+
+# ─── Diagnostics ─────────────────────────────────────────────────────────────
+
+"""Full diagnostic snapshot of a vehicle."""
+type DiagnosticsReport {
+  vin: String!
+  timestamp: String!
+  tirePressure: TirePressureReport
+  fuelStatus: FuelStatus
+  oilLife: OilLifeStatus
+  engineCoolantTemp: TemperatureReading
+  batteryVoltage: Float
+  checkEngineLamp: Boolean!
+  activeAlerts: [DiagnosticAlert!]!
+  evBattery: EvBatteryStatus
+}
+
+"""Tire pressure readings for all four tires."""
+type TirePressureReport {
+  timestamp: String!
+  frontLeft: TireReading!
+  frontRight: TireReading!
+  rearLeft: TireReading!
+  rearRight: TireReading!
+  unit: PressureUnit!
+}
+
+"""Pressure reading for a single tire."""
+type TireReading {
+  pressure: Float!
+  status: TireStatus!
+}
+
+"""Fuel level and estimated range."""
+type FuelStatus {
+  timestamp: String!
+  levelPercent: Float!
+  rangeEstimateMiles: Float!
+  unit: VolumeUnit!
+  volumeRemaining: Float
+}
+
+"""Engine oil life remaining."""
+type OilLifeStatus {
+  timestamp: String!
+  lifeRemainingPercent: Float!
+  status: OilStatus!
+}
+
+"""Odometer reading."""
+type OdometerReading {
+  timestamp: String!
+  value: Float!
+  unit: DistanceUnit!
+}
+
+"""A temperature sensor reading."""
+type TemperatureReading {
+  value: Float!
+  unit: TemperatureUnit!
+}
+
+"""A single diagnostic alert item."""
+type DiagnosticAlert {
+  code: String!
+  description: String!
+  severity: AlertSeverity!
+  recommendedAction: String
+}
+
+# ─── EV / Charging ───────────────────────────────────────────────────────────
+
+"""Current charging status of an EV."""
+type ChargingStatus {
+  vin: String!
+  timestamp: String!
+  isPluggedIn: Boolean!
+  isCharging: Boolean!
+  chargeStateDetail: ChargeStateDetail!
+  batteryLevel: EvBatteryStatus!
+  estimatedFullChargeTime: Int
+  chargeMode: ChargeMode
+  schedule: ChargingSchedule
+  plugType: PlugType
+  powerLevel: ChargePowerLevel
+}
+
+"""EV battery state of charge."""
+type EvBatteryStatus {
+  chargePercent: Float!
+  rangeEstimateMiles: Float!
+  conditioningStatus: BatteryConditioningStatus
+  temperatureCelsius: Float
+}
+
+"""A recurring charging schedule."""
+type ChargingSchedule {
+  id: ID!
+  startTime: String!
+  endTime: String
+  daysOfWeek: [DayOfWeek!]!
+  chargeLimit: Int!
+  rateOptimizationEnabled: Boolean!
+}
+
+"""Energy usage profile and historical data for an EV."""
+type EnergyProfile {
+  vin: String!
+  totalEnergyConsumedKwh: Float!
+  averageEfficiencyMilesPerKwh: Float!
+  lastChargeKwh: Float
+  chargeHistory: [ChargeSession!]!
+  regenerativeEnergyKwh: Float
+}
+
+"""A single EV charge session record."""
+type ChargeSession {
+  sessionId: ID!
+  startTime: String!
+  endTime: String
+  energyAddedKwh: Float!
+  startChargePercent: Float!
+  endChargePercent: Float!
+  locationName: String
+  chargerType: PlugType
+  costEstimate: CostEstimate
+}
+
+"""Estimated cost for a charge session."""
+type CostEstimate {
+  amount: Float!
+  currency: String!
+  ratePerKwh: Float
+}
+
+# ─── Location ─────────────────────────────────────────────────────────────────
+
+"""Current GPS location of the vehicle."""
+type VehicleLocation {
+  vin: String!
+  timestamp: String!
+  latitude: Float!
+  longitude: Float!
+  altitude: Float
+  headingDegrees: Float
+  speedMph: Float
+  accuracy: Float
+  address: Address
+}
+
+"""Postal address resolved from GPS coordinates."""
+type Address {
+  street: String
+  city: String
+  state: String
+  postalCode: String
+  country: String!
+  formattedAddress: String
+}
+
+# ─── Remote Commands ──────────────────────────────────────────────────────────
+
+"""Result returned immediately after issuing a remote command."""
+type RemoteCommandResponse {
+  commandId: ID!
+  status: RemoteCommandStatus!
+  message: String
+  issuedAt: String!
+  estimatedCompletionSeconds: Int
+}
+
+"""Status of a remote command (polled or via subscription)."""
+type RemoteCommandStatus {
+  commandId: ID!
+  type: RemoteCommandType!
+  status: CommandExecutionStatus!
+  requestedAt: String!
+  completedAt: String
+  failureReason: String
+}
+
+"""Paginated history of remote commands."""
+type CommandHistoryConnection {
+  nodes: [RemoteCommandStatus!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+# ─── Vehicle Health ───────────────────────────────────────────────────────────
+
+"""Comprehensive vehicle health report."""
+type VehicleHealthReport {
+  vin: String!
+  generatedAt: String!
+  overallStatus: HealthStatus!
+  sections: [HealthSection!]!
+  scheduledMaintenanceItems: [MaintenanceItem!]!
+  openRecalls: [Recall!]!
+}
+
+"""A section of the vehicle health report."""
+type HealthSection {
+  name: String!
+  status: HealthStatus!
+  items: [HealthItem!]!
+}
+
+"""An individual health check item."""
+type HealthItem {
+  name: String!
+  status: HealthStatus!
+  detail: String
+  recommendedAction: String
+  urgency: MaintenanceUrgency
+}
+
+"""A scheduled maintenance item."""
+type MaintenanceItem {
+  name: String!
+  dueMiles: Float
+  dueDate: String
+  lastPerformedMiles: Float
+  lastPerformedDate: String
+  urgency: MaintenanceUrgency!
+}
+
+"""A vehicle recall notice."""
+type Recall {
+  recallId: String!
+  nrhtNumber: String
+  description: String!
+  issueDate: String!
+  component: String!
+  remedy: String
+  status: RecallStatus!
+  completedDate: String
+}
+
+# ─── Alerts ──────────────────────────────────────────────────────────────────
+
+"""A vehicle alert or notification."""
+type VehicleAlert {
+  alertId: ID!
+  vin: String!
+  type: VehicleAlertType!
+  severity: AlertSeverity!
+  message: String!
+  triggeredAt: String!
+  acknowledged: Boolean!
+  location: VehicleLocation
+}
+
+"""User preference for a specific alert type."""
+type AlertPreference {
+  type: VehicleAlertType!
+  enabled: Boolean!
+  notificationChannels: [NotificationChannel!]!
+  thresholdValue: Float
+}
+
+# ─── Account ─────────────────────────────────────────────────────────────────
+
+"""User account associated with OnStar or myGM app."""
+type Account {
+  accountId: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  phone: String
+  preferredLanguage: String
+  vehicles: [Vehicle!]!
+  emergencyContacts: [EmergencyContact!]!
+  alertPreferences: [AlertPreference!]!
+  address: Address
+  createdAt: String!
+  updatedAt: String!
+}
+
+"""An emergency contact on the account."""
+type EmergencyContact {
+  contactId: ID!
+  name: String!
+  phone: String!
+  relationship: String
+  notifyOnCrash: Boolean!
+  notifyOnStolen: Boolean!
+}
+
+# ─── Subscriptions / Plans ────────────────────────────────────────────────────
+
+"""An OnStar or connected services subscription."""
+type VehicleSubscription {
+  subscriptionId: ID!
+  plan: ConnectedServicePlan!
+  status: SubscriptionStatus!
+  startDate: String!
+  endDate: String
+  autoRenew: Boolean!
+  features: [SubscriptionFeature!]!
+}
+
+"""A connected services plan."""
+type ConnectedServicePlan {
+  planId: ID!
+  name: String!
+  description: String!
+  monthlyPriceCents: Int!
+  currency: String!
+  includedFeatures: [SubscriptionFeature!]!
+}
+
+"""A feature included in a connected services plan."""
+type SubscriptionFeature {
+  featureId: ID!
+  name: String!
+  description: String!
+  category: FeatureCategory!
+}
+
+# ─── Trips ───────────────────────────────────────────────────────────────────
+
+"""Summary data for a single vehicle trip."""
+type Trip {
+  tripId: ID!
+  vin: String!
+  startTime: String!
+  endTime: String!
+  distanceMiles: Float!
+  durationMinutes: Float!
+  startLocation: VehicleLocation
+  endLocation: VehicleLocation
+  averageSpeedMph: Float
+  maxSpeedMph: Float
+  fuelConsumedGallons: Float
+  energyConsumedKwh: Float
+  idleTimeMinutes: Float
+  harshBrakingEvents: Int
+  hardAccelerationEvents: Int
+  score: DriveScore
+}
+
+"""Driving behavior score for a trip."""
+type DriveScore {
+  overall: Float!
+  safety: Float!
+  efficiency: Float!
+  smoothness: Float!
+}
+
+"""Paginated list of trips."""
+type TripConnection {
+  nodes: [Trip!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+# ─── Service / Dealers ────────────────────────────────────────────────────────
+
+"""A GM-authorized dealership."""
+type Dealer {
+  dealerId: ID!
+  name: String!
+  address: Address!
+  phone: String
+  website: String
+  distanceMiles: Float
+  hoursOfOperation: [DealerHours!]!
+  services: [DealerService!]!
+  rating: Float
+  acceptsOnlineAppointments: Boolean!
+}
+
+"""Operating hours for a dealer on a given day."""
+type DealerHours {
+  dayOfWeek: DayOfWeek!
+  openTime: String
+  closeTime: String
+  isClosed: Boolean!
+}
+
+"""A service type offered by a dealer."""
+type DealerService {
+  serviceId: ID!
+  name: String!
+  category: ServiceCategory!
+  estimatedDurationMinutes: Int
+}
+
+"""A service appointment."""
+type ServiceAppointment {
+  appointmentId: ID!
+  dealer: Dealer!
+  vehicle: Vehicle!
+  scheduledAt: String!
+  services: [DealerService!]!
+  transportationType: TransportationType
+  notes: String
+  status: AppointmentStatus!
+  confirmationNumber: String
+}
+
+"""Paginated service history."""
+type ServiceHistoryConnection {
+  nodes: [ServiceRecord!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+"""A record of a completed service visit."""
+type ServiceRecord {
+  recordId: ID!
+  dealer: Dealer!
+  serviceDate: String!
+  odometerMiles: Float!
+  servicesPerformed: [String!]!
+  technicianNotes: String
+  totalCostCents: Int
+  currency: String
+  invoiceUrl: String
+}
+
+# ─── Wi-Fi Hotspot ────────────────────────────────────────────────────────────
+
+"""In-vehicle Wi-Fi hotspot details."""
+type WifiHotspot {
+  ssid: String!
+  isActive: Boolean!
+  dataUsedMb: Float!
+  dataLimitMb: Float
+  connectedDevices: Int!
+  subscriptionStatus: SubscriptionStatus!
+}
+
+# ─── Roadside Assistance ──────────────────────────────────────────────────────
+
+"""Information about roadside assistance coverage."""
+type RoadsideAssistanceInfo {
+  coverageActive: Boolean!
+  coverageExpires: String
+  servicesAvailable: [RoadsideService!]!
+  callCenterPhone: String!
+}
+
+"""A roadside assistance service type."""
+type RoadsideService {
+  serviceType: RoadsideServiceType!
+  description: String!
+  coveredUnderPlan: Boolean!
+}
+
+"""A submitted roadside assistance request."""
+type RoadsideAssistanceRequest {
+  requestId: ID!
+  serviceType: RoadsideServiceType!
+  status: RoadsideRequestStatus!
+  estimatedArrivalMinutes: Int
+  providerName: String
+  providerPhone: String
+  vehicleLocation: VehicleLocation
+  createdAt: String!
+}
+
+# ─── Pagination ───────────────────────────────────────────────────────────────
+
+"""Relay-style pagination information."""
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalPages: Int!
+}
+
+# ─── Input Types ──────────────────────────────────────────────────────────────
+
+"""Input for setting the cabin pre-conditioning temperature."""
+input CabinTemperatureInput {
+  temperatureValue: Float!
+  unit: TemperatureUnit!
+  mode: ClimateMode!
+}
+
+"""Input for configuring a charging schedule."""
+input ChargingScheduleInput {
+  startTime: String!
+  endTime: String
+  daysOfWeek: [DayOfWeek!]!
+  chargeLimit: Int!
+  rateOptimizationEnabled: Boolean
+}
+
+"""Input for sending a destination to the vehicle."""
+input DestinationInput {
+  name: String
+  latitude: Float!
+  longitude: Float!
+  address: AddressInput
+}
+
+"""Input for an address."""
+input AddressInput {
+  street: String!
+  city: String!
+  state: String!
+  postalCode: String!
+  country: String!
+}
+
+"""Input for updating account profile details."""
+input AccountProfileInput {
+  firstName: String
+  lastName: String
+  phone: String
+  preferredLanguage: String
+  address: AddressInput
+}
+
+"""Input for adding an emergency contact."""
+input EmergencyContactInput {
+  name: String!
+  phone: String!
+  relationship: String
+  notifyOnCrash: Boolean!
+  notifyOnStolen: Boolean!
+}
+
+"""Input for configuring a vehicle alert preference."""
+input AlertPreferenceInput {
+  type: VehicleAlertType!
+  enabled: Boolean!
+  notificationChannels: [NotificationChannel!]!
+  thresholdValue: Float
+}
+
+"""Input for scheduling a service appointment."""
+input ServiceAppointmentInput {
+  dealerId: ID!
+  vin: String!
+  scheduledAt: String!
+  serviceIds: [ID!]!
+  transportationType: TransportationType
+  notes: String
+}
+
+"""Input for a roadside assistance request."""
+input RoadsideRequestInput {
+  serviceType: RoadsideServiceType!
+  notes: String
+  alternatePhone: String
+}
+
+# ─── Enums ────────────────────────────────────────────────────────────────────
+
+"""General category of vehicle."""
+enum VehicleType {
+  SEDAN
+  TRUCK
+  SUV
+  CROSSOVER
+  VAN
+  COUPE
+  CONVERTIBLE
+  WAGON
+}
+
+"""Propulsion type."""
+enum FuelType {
+  GASOLINE
+  DIESEL
+  ELECTRIC
+  PLUG_IN_HYBRID
+  HYBRID
+  HYDROGEN
+}
+
+"""Transmission type."""
+enum TransmissionType {
+  AUTOMATIC
+  MANUAL
+  CVT
+  DUAL_CLUTCH
+}
+
+"""Drivetrain configuration."""
+enum DrivetrainType {
+  FWD
+  RWD
+  AWD
+  FOUR_WHEEL_DRIVE
+}
+
+"""Remote command types available on the platform."""
+enum RemoteCommandType {
+  LOCK_DOORS
+  UNLOCK_DOORS
+  REMOTE_START
+  CANCEL_REMOTE_START
+  ALERT
+  SET_CABIN_TEMPERATURE
+  START_CHARGING
+  STOP_CHARGING
+  SET_CHARGING_SCHEDULE
+  SET_CHARGE_LIMIT
+  SEND_DESTINATION
+}
+
+"""Execution state of a remote command."""
+enum CommandExecutionStatus {
+  PENDING
+  IN_PROGRESS
+  SUCCESS
+  FAILED
+  TIMED_OUT
+  CANCELLED
+}
+
+"""OnStar service activation status."""
+enum OnStarServiceStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  EXPIRED
+  PENDING_ACTIVATION
+}
+
+"""Vehicle feature capabilities."""
+enum VehicleCapability {
+  REMOTE_START
+  REMOTE_LOCK_UNLOCK
+  LOCATION
+  DIAGNOSTICS
+  CHARGING
+  SEND_DESTINATION
+  CABIN_PRECONDITIONING
+  WIFI_HOTSPOT
+  ROADSIDE_ASSISTANCE
+  VEHICLE_HEALTH_REPORT
+  TRIP_TRACKING
+}
+
+"""Day of the week."""
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+"""EV charging mode."""
+enum ChargeMode {
+  IMMEDIATE
+  SCHEDULED
+  RATE_OPTIMIZED
+  OFF_PEAK
+}
+
+"""EV charge connector/plug type."""
+enum PlugType {
+  J1772
+  CCS
+  CHADEMO
+  TESLA_NACS
+  TYPE_2
+}
+
+"""EV charging power tier."""
+enum ChargePowerLevel {
+  LEVEL_1
+  LEVEL_2
+  DC_FAST_CHARGE
+}
+
+"""EV charge state detail."""
+enum ChargeStateDetail {
+  NOT_PLUGGED_IN
+  PLUGGED_IN_NOT_CHARGING
+  CHARGING
+  FULLY_CHARGED
+  CHARGE_FAULT
+  WAITING_FOR_SCHEDULE
+  PRECONDITION_ACTIVE
+}
+
+"""Battery thermal conditioning state."""
+enum BatteryConditioningStatus {
+  NOT_ACTIVE
+  HEATING
+  COOLING
+  COMPLETE
+}
+
+"""Tire pressure status."""
+enum TireStatus {
+  OK
+  LOW
+  CRITICALLY_LOW
+  FLAT
+  SENSOR_FAULT
+}
+
+"""Oil life condition."""
+enum OilStatus {
+  GOOD
+  CHANGE_SOON
+  CHANGE_NOW
+  PAST_DUE
+}
+
+"""Vehicle or system health status."""
+enum HealthStatus {
+  GOOD
+  FAIR
+  POOR
+  CRITICAL
+  UNKNOWN
+}
+
+"""Urgency level for a maintenance item."""
+enum MaintenanceUrgency {
+  ROUTINE
+  SOON
+  NOW
+  OVERDUE
+}
+
+"""Vehicle recall status."""
+enum RecallStatus {
+  OPEN
+  REMEDY_AVAILABLE
+  COMPLETED
+  PARTS_UNAVAILABLE
+}
+
+"""Type of vehicle alert."""
+enum VehicleAlertType {
+  LOW_FUEL
+  LOW_TIRE_PRESSURE
+  CHECK_ENGINE
+  OIL_CHANGE_DUE
+  SPEED_THRESHOLD
+  BOUNDARY_ALERT
+  BATTERY_CRITICAL
+  CHARGING_COMPLETE
+  CHARGING_INTERRUPTED
+  STOLEN_VEHICLE
+  CRASH_DETECTED
+  MAINTENANCE_DUE
+}
+
+"""Severity of an alert."""
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+"""Notification delivery channel."""
+enum NotificationChannel {
+  PUSH
+  SMS
+  EMAIL
+  IN_VEHICLE
+}
+
+"""Status of a connected services subscription."""
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  TRIAL
+  CANCELLED
+  PENDING
+}
+
+"""Category of a subscription feature."""
+enum FeatureCategory {
+  SAFETY
+  SECURITY
+  REMOTE_ACCESS
+  NAVIGATION
+  DIAGNOSTICS
+  CONNECTIVITY
+  CONCIERGE
+}
+
+"""Category of dealer service."""
+enum ServiceCategory {
+  OIL_CHANGE
+  TIRE_SERVICE
+  BRAKE_SERVICE
+  ELECTRICAL
+  RECALL_REPAIR
+  GENERAL_MAINTENANCE
+  COLLISION_REPAIR
+  WARRANTY_REPAIR
+  EV_SERVICE
+}
+
+"""Transportation option during service."""
+enum TransportationType {
+  WAIT_AT_DEALER
+  LOANER_VEHICLE
+  SHUTTLE
+  PICKUP_AND_DELIVERY
+  NONE
+}
+
+"""Status of a service appointment."""
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+"""Type of roadside service."""
+enum RoadsideServiceType {
+  TOWING
+  FLAT_TIRE
+  BATTERY_JUMP
+  FUEL_DELIVERY
+  LOCKOUT
+  WINCHING
+}
+
+"""Status of a roadside assistance request."""
+enum RoadsideRequestStatus {
+  SUBMITTED
+  DISPATCHED
+  EN_ROUTE
+  ON_SCENE
+  COMPLETED
+  CANCELLED
+}
+
+"""Unit for pressure measurements."""
+enum PressureUnit {
+  PSI
+  BAR
+  KPA
+}
+
+"""Unit for volume measurements."""
+enum VolumeUnit {
+  GALLONS
+  LITERS
+}
+
+"""Unit for distance measurements."""
+enum DistanceUnit {
+  MILES
+  KILOMETERS
+}
+
+"""Unit for temperature measurements."""
+enum TemperatureUnit {
+  FAHRENHEIT
+  CELSIUS
+}
+
+"""Climate control mode."""
+enum ClimateMode {
+  HEAT
+  COOL
+  DEFROST
+  AUTO
+}
