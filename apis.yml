@@ -38,6 +38,8 @@ apis:
     it matters. Create an account now to start developing amazing in-vehicle experiences
     for your customers.
 common:
+- type: DomainSecurity
+  url: security/general-motors-domain-security.yml
 - type: GitHubOrganization
   url: https://github.com/generalmotors
 - type: LinkedIn
