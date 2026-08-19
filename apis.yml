@@ -31,7 +31,7 @@ tags:
 - Telematics
 - Fortune 100
 url: https://raw.githubusercontent.com/api-evangelist/general-motors/refs/heads/main/apis.yml
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: general-motors:general-motors
   name: General Motors
