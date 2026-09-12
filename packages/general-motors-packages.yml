@@ -1,0 +1,60 @@
+specification: API Evangelist Packages
+specificationVersion: '0.1'
+provider: General Motors
+providerId: general-motors
+generated: '2026-09-12'
+method: searched
+source: registry.npmjs.org, pypi.org, github.com/generalmotors
+description: >-
+  General Motors publishes no first-party SDK or client library on any public package
+  registry. Every OnStar / GM client library on npm and PyPI is a community project and
+  says so in its own description. GM's GitHub organization (47 public repos) is almost
+  entirely upstream mirrors and forks (Apache Kafka, Hadoop, Angular, Suricata) with no
+  first-party API client among them.
+official_count: 0
+community_count: 4
+scoring_note: >-
+  No `SDKs` pointer is wired in apis.yml. sdk_count reads SDKs and asserts the provider
+  ships a client library; GM does not. Only the unscored `Packages` pointer is wired, so
+  this file is discoverable without crediting GM with somebody else's work.
+registries_searched:
+- npm (registry.npmjs.org search + direct package metadata)
+- PyPI (pypi.org/pypi/<name>/json)
+- github.com/generalmotors (47 public repos, listed via the GitHub API)
+packages: []
+community_packages:
+- name: onstarjs2
+  registry: npm
+  url: https://www.npmjs.com/package/onstarjs2
+  repository: https://github.com/BigThunderSR/OnStarJS
+  official: false
+  version: 2.16.6
+  published: '2026-08-14'
+  note: Unofficial OnStar client, actively maintained; the most current of the community libraries.
+- name: node-red-contrib-onstar2
+  registry: npm
+  url: https://www.npmjs.com/package/node-red-contrib-onstar2
+  repository: https://github.com/BigThunderSR/node-red-contrib-onstar2
+  official: false
+  version: 3.2.1
+  published: '2026-08-19'
+  note: Node-RED nodes built on onstarjs2; supports OnStar API v1 and v3.
+- name: onstarjs
+  registry: npm
+  url: https://www.npmjs.com/package/onstarjs
+  repository: https://github.com/samrum/OnStarJS
+  official: false
+  version: 2.5.3
+  published: '2024-07-27'
+  note: The original community OnStar client; onstarjs2 is the maintained fork.
+- name: onstar
+  registry: pypi
+  url: https://pypi.org/project/onstar/
+  repository: https://github.com/nyxnyx/onstar
+  official: false
+  version: 0.1.2
+  published: '2019-02-28'
+  note: Abandoned community Python client; last release predates the current OnStar API.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

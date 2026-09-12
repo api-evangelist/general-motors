@@ -18,21 +18,27 @@ deliveryModel:
   generated: '2026-08-28'
   method: derived
 accessModel:
-  pricing: free
-  onboarding: unknown
+  pricing: enterprise
+  onboarding: approval
   trial: false
   try_now: false
   public: false
-  label: Free
-  confidence: medium
+  label: Enterprise — approved customers and partners only
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
-  method: derived
+  - https://developer.gm.com/explore-apis
+  generated: '2026-09-12'
+  method: searched
+  note: >-
+    Corrected 2026-09-12. The previous value (pricing: free) was derived from a placeholder
+    plans artifact that invented a partner tier. GM publishes no price, no tier and no
+    self-serve signup; the portal states the APIs are available to approved customers and
+    partners and routes every visitor to a Contact Us form.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/general-motors.png
 access: 3rd-Party
 created: '2025-02-08'
-modified: '2026-04-28'
+modified: '2026-09-12'
 position: Consuming
 tags:
 - Automobiles
@@ -50,11 +56,12 @@ apis:
   - Automobiles
   - Connected Vehicles
   humanURL: https://developer.gm.com/
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/general-motors.png
   properties:
-  - url: https://developer.gm.com/
+  - url: https://developer.gm.com/docs/api-data-services
     type: Documentation
-  - url: graphql/general-motors-graphql.md
-    type: GraphQL
+  - url: https://developer.gm.com/explore-apis
+    type: APIReference
   description: You can reach customers in their cars using GMs powerful, in-vehicle
     platform. Our tools can provide access to close to 200 data points, allowing you
     to monitor vehicle data in real-time to deliver the content that matters, when
@@ -68,11 +75,51 @@ common:
 - type: LinkedIn
   url: https://www.linkedin.com/company/general-motors
 - type: Website
+  url: https://www.gm.com/
+- type: DeveloperPortal
   url: https://developer.gm.com/
 - type: Documentation
-  url: https://developer.gm.com/docs
-- type: GettingStarted
-  url: https://developer.gm.com/docs/getting-started
+  url: https://developer.gm.com/docs/api-data-services
+- type: APIReference
+  url: https://developer.gm.com/explore-apis
+- type: Support
+  url: https://developer.gm.com/contact-us
+- type: Blog
+  url: https://news.gm.com/
+- type: PrivacyPolicy
+  url: https://www.gm.com/privacy-statement
+- type: Security
+  url: security/general-motors-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/general-motors-vulnerability-disclosure.yml
+- type: Packages
+  url: packages/general-motors-packages.yml
+- type: LLMsTxt
+  url: llms/general-motors-llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-12'
+  status: minimal
+  artifacts_added: 5
+  pass: local-v3
+x-coverage:
+  state: gated
+  reason: customer-only-docs
+  detail: >-
+    The GM Developer Portal is a single-page app whose own router guards every /docs/* route
+    with requireCommercialAPIAccess and whose backend at https://developer.gm.com/v1 returns
+    403 to every anonymous request except GET /v1/csrf-token, so the API reference and any
+    machine-readable contract are released only to customers GM has already approved for
+    commercial API access.
+  evidence:
+  - url: https://developer.gm.com/v1/apis
+    status: 403
+  - url: https://developer.gm.com/v1/csrf-token
+    status: 200
+  - url: https://api.gm.com/openapi.json
+    status: 404
+  - url: https://api.onstarfleetintelligence.com/openapi.json
+    status: 404
+  checked: '2026-09-12'

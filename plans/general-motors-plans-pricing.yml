@@ -4,43 +4,43 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: General Motors
 providerId: general-motors
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-09-12'
+generated: '2026-09-12'
+method: searched
+source: https://developer.gm.com/explore-apis
+reconciled: true
 tags:
-  - Automotive
-  - Connected Vehicle
-  - OEM
-description: General Motors operates partner / developer programs (vehicle data, OnStar, fleet
-  telematics) under commercial agreements rather than self-service pricing. Public-facing pricing
-  for developer API access is not published.
-notes: developer.gm.com and gm.com returned a maintenance error during reconciliation; no
-  publicly viewable pricing or plan documentation could be captured.
+- Automotive
+- Connected Vehicle
+- OEM
+description: >-
+  General Motors publishes no plans and no prices for its API and data services. Access to
+  the OnStar / GM Envolve commercial APIs is negotiated — the developer portal's own copy
+  says the APIs are "Available to approved customers and partners", and the only onboarding
+  path offered to a visitor is a Contact Us form.
+plan_count: 0
+plans: []
+notes: >-
+  Upgraded 2026-09-12 from a generated placeholder that invented a single "Partner /
+  Developer Program" tier. GM publishes no such tier publicly, so the entry was removed and
+  replaced with an honest zero. Re-probed the portal: the pricing-bearing pages, if they
+  exist, live under /docs/*, which the portal's router guards with requireCommercialAPIAccess.
+evidence:
+- url: https://developer.gm.com/explore-apis
+  status: 200
+  note: public route; describes the API catalog, names no price and no tier
+- url: https://developer.gm.com/contact-us
+  status: 200
+  note: the "Get In Touch" sales path that stands in for self-serve signup
+- url: https://developer.gm.com/v1/apis
+  status: 403
+  note: portal catalog backend; bearer token required, so no machine-readable plan data
+- url: https://www.gmenvolve.com/software/onstar/api-data-services
+  status: 403
+  note: GM Envolve OnStar API page refused our fetch (edge policy)
 sources:
-  - https://developer.gm.com/
-  - https://www.gm.com/
-plans:
-  - id: general-motors-partner
-    name: Partner / Developer Program
-    type: enterprise
-    description: Partner-style developer access negotiated with GM; no public price list.
-    entries:
-      - label: Partner contract
-        name: contract
-        type: subscription
-        metric: contract
-        limit: -1
-        timeFrame: year
-        geo: US
-        unit: 1
-        price: contact gm
-        userMultiplied: false
-    elements:
-      - name: Vehicle data / telematics
-      - name: OnStar APIs
-      - name: Fleet integrations
+- https://developer.gm.com/
+- https://developer.gm.com/explore-apis
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

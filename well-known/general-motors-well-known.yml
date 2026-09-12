@@ -1,0 +1,175 @@
+specification: API Evangelist Well-Known Probe
+specificationVersion: '0.1'
+provider: General Motors
+providerId: general-motors
+generated: '2026-09-12'
+method: probed
+source: live HTTPS probes of every host this record knows (registrable domain + www, the
+  developer portal host, and both GM API gateway hosts)
+description: >-
+  General Motors serves no /.well-known document on any host we can reach. Recorded as an
+  honest absence: no WellKnown or SecurityTxt pointer is wired in apis.yml, because every
+  path either 404s or returns the developer portal's single-page-app shell.
+note: >-
+  developer.gm.com is a client-rendered single-page app whose static host answers HTTP 200
+  with the same 5,366-byte React shell for EVERY path, including paths that do not exist.
+  A 200 on that host is therefore NOT evidence of a document — html_shell: true marks each
+  one. The two GM API gateways (api.gm.com and api.onstarfleetintelligence.com, both Azure
+  API Management) answer a clean JSON 404.
+hosts:
+- host: developer.gm.com
+  role: developer portal (single-page app; 200 shell on every path)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/openid-configuration
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/api-catalog
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/agent-card.json
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+  - path: /.well-known/agent.json
+    status: 200
+    html_shell: true
+    file: null
+    note: SPA shell, not a document — treated as a miss
+- host: www.gm.com
+  role: corporate website
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: gm.com
+  role: registrable domain (301 to www.gm.com)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: api.gm.com
+  role: GM API gateway (Azure API Management — ocp-apim-* response headers)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: api.onstarfleetintelligence.com
+  role: OnStar Fleet Intelligence API gateway (api.gmenvolve.com redirects here)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+related_discovery:
+- url: https://450fd55c-b136-4d90-9e9f-a59b07772fab.ciamlogin.com/450fd55c-b136-4d90-9e9f-a59b07772fab/v2.0/.well-known/openid-configuration
+  status: 200
+  kind: OpenID Provider Metadata
+  owned_by: Microsoft Entra External ID (CIAM) tenant configured by General Motors
+  note: >-
+    NOT a GM-hosted document and deliberately excluded from hosts[] above so it cannot be
+    scored as a GM-served /.well-known file. It is reachable only because
+    https://developer.gm.com/config/index.js publicly names the tenant authority the
+    developer portal signs in against. Recorded as auth evidence, not as GM discovery.
+agent_card:
+  found: false
+  note: >-
+    Probed /.well-known/agent-card.json and the pre-0.3 /.well-known/agent.json on all five
+    hosts. The only 200s came from the developer.gm.com SPA catch-all and are HTML, not an
+    AgentCard object, so nothing was saved — per the pipeline contract an agent card is
+    search-only and is never authored on a provider's behalf.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

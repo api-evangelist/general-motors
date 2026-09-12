@@ -1,0 +1,76 @@
+specification: API Evangelist Authentication Profile
+specificationVersion: '0.1'
+provider: General Motors
+providerId: general-motors
+generated: '2026-09-12'
+method: probed
+source: https://developer.gm.com/config/index.js
+description: >-
+  General Motors publishes no authentication documentation for its connected-vehicle / fleet
+  APIs — the reference that would describe it sits behind the portal's commercial-access
+  gate. What IS publicly verifiable is how the GM Developer Portal's own API backend
+  authenticates, established here by probe rather than by documentation.
+scoring_note: >-
+  NO `Authentication` pointer is wired into apis.yml for this file, on purpose. The rating's
+  authentication_documented check asserts that the PROVIDER documents authentication for its
+  API; GM does not. This artifact records what we were able to observe, not a published auth
+  guide, and crediting it would be a false claim made on GM's behalf.
+schemes:
+- id: entra-external-id-bearer
+  type: oauth2
+  applies_to: https://developer.gm.com/v1 (GM Developer Portal backend)
+  flow: authorization_code (MSAL browser client, PKCE)
+  identity_provider: Microsoft Entra External ID (CIAM)
+  issuer: https://450fd55c-b136-4d90-9e9f-a59b07772fab.ciamlogin.com/450fd55c-b136-4d90-9e9f-a59b07772fab/v2.0
+  client_id: def7864f-a5b6-4d80-b024-592df723ad5a
+  redirect_uri: https://developer.gm.com/
+  scopes_supported:
+  - openid
+  - profile
+  - email
+  - offline_access
+  token_endpoint: https://450fd55c-b136-4d90-9e9f-a59b07772fab.ciamlogin.com/450fd55c-b136-4d90-9e9f-a59b07772fab/oauth2/v2.0/token
+  jwks_uri: https://450fd55c-b136-4d90-9e9f-a59b07772fab.ciamlogin.com/450fd55c-b136-4d90-9e9f-a59b07772fab/discovery/v2.0/keys
+  bearer: 'Authorization: Bearer <id token>'
+  ownership_note: >-
+    The issuer is a Microsoft-hosted CIAM host, not a GM host. It is attributed to GM because
+    developer.gm.com serves the tenant id, client id and redirect URI itself, unauthenticated,
+    from its own /config/index.js — the portal names this tenant as its authority.
+- id: csrf-double-submit
+  type: csrf
+  applies_to: https://developer.gm.com/v1 (state-changing requests)
+  header: X-XSRF-TOKEN
+  token_endpoint: https://developer.gm.com/v1/csrf-token
+  anonymous: true
+  note: >-
+    GET /v1/csrf-token answers 200 anonymously and returns {audience, token, headerName}.
+    It is the only endpoint under /v1 that answers without a bearer token.
+authorization:
+  model: commercial-agreement
+  note: >-
+    Signing in is not sufficient. The portal's router guards /docs/* with
+    requireCommercialAPIAccess, so the API reference is released per-account only after GM
+    approves commercial API access.
+observed:
+- url: https://developer.gm.com/v1/csrf-token
+  method: GET
+  status: 200
+  detail: anonymous; returns the CSRF token envelope
+- url: https://developer.gm.com/v1/apis
+  method: GET
+  status: 403
+  detail: empty body, istio-envoy upstream — bearer token required
+- url: https://developer.gm.com/v1/graphql
+  method: POST
+  status: 403
+  detail: '{"message":"Invalid or missing CSRF token. Call GET /v1/csrf-token first.","error":"CSRF_VALIDATION_FAILED"}'
+- url: https://450fd55c-b136-4d90-9e9f-a59b07772fab.ciamlogin.com/450fd55c-b136-4d90-9e9f-a59b07772fab/v2.0/.well-known/openid-configuration
+  method: GET
+  status: 200
+  detail: OpenID Provider Metadata for the tenant the portal signs in against
+unknown:
+- The authentication model for the OnStar / GM Envolve vehicle-data and fleet APIs
+  (api.gm.com, api.onstarfleetintelligence.com) is not publicly documented.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -4,33 +4,46 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: General Motors
 providerId: general-motors
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
+modified: '2026-09-12'
+generated: '2026-09-12'
+method: searched
+source: https://developer.gm.com/explore-apis
+reconciled: true
 tags:
-  - Automotive
-  - Connected Vehicle
-  - Rate Limiting
-description: General Motors APIs (vehicle data, OnStar, fleet) are partner-gated; published
-  consolidated rate-limit documentation is not available externally.
-notes: developer.gm.com was not retrievable during reconciliation. Per-API limits should be
-  confirmed with the GM partner-program contact or in the partner agreement.
+- Automotive
+- Connected Vehicle
+- Rate Limiting
+description: >-
+  General Motors publishes no rate limits for its API and data services, and no rate-limit
+  response headers can be observed because no GM API endpoint answers a request
+  unauthenticated. Any limits that exist are stated in the commercial agreement, which is
+  not public.
+limit_count: 0
+limits: []
+headers: []
+responseCodes: {}
+notes: >-
+  Upgraded 2026-09-12 from a generated placeholder whose single entry read
+  "limit: see partner agreement" — a description of the absence, not a published limit, and
+  it was being counted as one. Replaced with an honest zero. The documentation that would
+  carry limits sits under developer.gm.com/docs/*, which the portal router guards with
+  requireCommercialAPIAccess; the portal backend returns 403 to anonymous callers, so no
+  X-RateLimit-*/RateLimit-*/Retry-After header could be observed either.
+evidence:
+- url: https://developer.gm.com/explore-apis
+  status: 200
+  note: public API catalog page; states no limits
+- url: https://developer.gm.com/v1/apis
+  status: 403
+  note: no rate-limit headers on the response; bearer token required
+- url: https://api.gm.com/
+  status: 404
+  note: GM's Azure API Management gateway; JSON 404 with no rate-limit headers
+- url: https://api.onstarfleetintelligence.com/
+  status: 404
+  note: OnStar Fleet Intelligence gateway; JSON 404 with no rate-limit headers
 sources:
-  - https://developer.gm.com/
-responseCodes:
-  throttled: 429
-limits:
-  - name: Partner API limits
-    scope: partner
-    metric: varies
-    limit: see partner agreement
-policies:
-  - name: Partner-scoped
-    description: Limits are governed by the partner-program agreement; no public tier.
-  - name: Backoff on 429
-    description: Standard exponential-backoff retry with Retry-After honoring is recommended.
+- https://developer.gm.com/
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
