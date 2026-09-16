@@ -1,0 +1,14 @@
+{
+  "repo": "general-motors",
+  "feeds": [
+    {
+      "source": "https://developer.gm.com/contact-us",
+      "feed_url": "https://developer.gm.com/contact-us",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-13T13:00:00Z"
+}
