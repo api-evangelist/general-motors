@@ -66,47 +66,107 @@
 
 You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters. Create an account now to start developing amazing in-vehicle experiences for your customers.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/general-motors/refs/heads/main/apis.yml)
+**Areas:** Automobiles · Cars · Vehicles · Connected Vehicles · Telematics · Fortune 100
 
-## Scope
+## General Motors on APIs.io
 
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+Everything profiled for General Motors is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/general-motors/](https://apis.io/providers/general-motors/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (1)
 
-- Automobiles, Cars, Vehicles, Connected Vehicles, Telematics
+- [General Motors](https://apis.io/apis/general-motors/general-motors/) — You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2025-02-08
-- **Modified:** 2026-04-28
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Security (3)
 
-### General Motors
+Authentication, trust centre, and vulnerability disclosure.
 
-You can reach customers in their cars using GMs powerful, in-vehicle platform. Our tools can provide access to close to 200 data points, allowing you to monitor vehicle data in real-time to deliver the content that matters, when it matters.
+- [General Motors Authentication](https://apis.io/security/general-motors/general-motors-authentication/)
+- [General Motors Domain Security](https://apis.io/security/general-motors/general-motors-domain-security/)
+- [General Motors Vulnerability Disclosure](https://apis.io/security/general-motors/general-motors-vulnerability-disclosure/)
 
-**Human URL:** [https://developer.gm.com/](https://developer.gm.com/)
+#### Plans and pricing (1)
 
-#### Tags
+Published plans, tiers and prices.
 
-- Automobiles, Connected Vehicles
+- [General Motors Plans Pricing](https://apis.io/plans/general-motors/general-motors-plans-pricing/)
 
-#### Properties
+#### Rate limits (1)
 
-- [Documentation](https://developer.gm.com/)
+Published request limits.
 
-## Common Properties
+- [General Motors Rate Limits](https://apis.io/rate-limits/general-motors/general-motors-rate-limits/)
 
-- [Website](https://developer.gm.com/)
-- [Documentation](https://developer.gm.com/docs)
-- [Getting Started](https://developer.gm.com/docs/getting-started)
+#### FinOps (1)
 
-## Maintainers
+What the API costs to run, by operation.
 
-**FN:** Kin Lane
+- [General Motors Finops](https://apis.io/finops/general-motors/general-motors-finops/)
 
-**Email:** kin@apievangelist.com
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.gm.com/)
+- [Documentation](https://developer.gm.com/docs/api-data-services)
+- [API reference](https://developer.gm.com/explore-apis)
+- [Support](https://developer.gm.com/contact-us)
+- [Blog](https://news.gm.com/)
+- [Privacy policy](https://www.gm.com/privacy-statement)
+- [GitHub](https://github.com/generalmotors)
+
+## API Evangelist rating
+
+**Kin Score 16.3** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 57.1 |
+| Contract quality | 0.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 13.2 |
+| Developer ergonomics | 33.3 |
+| Access clarity | 10.5 |
+
+**Agent readiness 2.5** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 15.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/general-motors/](https://apis.io/providers/general-motors/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for General Motors: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/general-motors/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
