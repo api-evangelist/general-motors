@@ -17,6 +17,9 @@ artifacts:
   heartbeat/2026-11-06.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-13.yml:
+    method: unknown
+    evidence: no authorship recorded
   integrations/_index.yml:
     method: generated
     evidence: carries an API Evangelist house phrase
@@ -26,7 +29,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -92,6 +95,9 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   llms/general-motors-llms.txt:
     method: generated
     evidence: carries an API Evangelist house phrase
@@ -116,6 +122,9 @@ artifacts:
   press/2026-05-25-05-general-motors-is-using-artificial-intelligence-to-speed-up.md:
     method: unknown
     evidence: no authorship recorded
+  privacy/general-motors-privacy-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
   rate-limits/general-motors-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
